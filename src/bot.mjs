@@ -1,17 +1,22 @@
 import {Bot} from "grammy";
+import {AMQPWebSocketClient} from "@cloudamqp/amqp-client";
 
 export const {
-
-    // Telegram bot token from t.me/BotFather
+    AMQP_URL: url,
     TELEGRAM_BOT_TOKEN: token,
-
-    // Secret token to validate incoming updates
     TELEGRAM_SECRET_TOKEN: secretToken = String(token).split(":").pop()
-
 } = process.env;
 
-// Default grammY bot instance
 export const bot = new Bot(token);
 
-// Sample handler for a simple echo bot
+bot.command("test", async ctx => {
+    const amqp = new AMQPWebSocketClient(url, "/", "guest", "guest");
+    const conn = await amqp.connect()
+    const ch = await conn.channel()
+    const q = await ch.queue()
+    const result = await q.publish(ctx.match, {deliveryMode: 2});
+    await conn.close();
+    return ctx.reply(JSON.stringify(result));
+})
+
 bot.on("message:text", ctx => ctx.reply(ctx.msg.text));
