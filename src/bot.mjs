@@ -1,17 +1,22 @@
 import {Bot} from "grammy";
+import RabbitMQManager from "rabbitmq-management-api";
 
 export const {
-
-    // Telegram bot token from t.me/BotFather
+    RABBITMQ_USERNAME: username,
+    RABBITMQ_PASSWORD: password,
+    RABBITMQ_BASE_URL: baseURL,
     TELEGRAM_BOT_TOKEN: token,
-
-    // Secret token to validate incoming updates
     TELEGRAM_SECRET_TOKEN: secretToken = String(token).split(":").pop()
-
 } = process.env;
 
-// Default grammY bot instance
+const manager = new RabbitMQManager({baseURL, auth: {username, password}});
+
 export const bot = new Bot(token);
 
-// Sample handler for a simple echo bot
+bot.command("test", async ctx => {
+    const result = await manager.getClusterName();
+    console.debug(result);
+    return ctx.reply(JSON.stringify(result) || "ok");
+});
+
 bot.on("message:text", ctx => ctx.reply(ctx.msg.text));
