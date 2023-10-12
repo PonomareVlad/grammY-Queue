@@ -12,14 +12,11 @@
   },
   "dependencies": {
     "grammy": "^1.19.1",
-    "rabbitmq-management-api": "^1.0.0",
+    "rabbitmq-management-api": "PonomareVlad/rabbitmq-management-api#fixes",
     "vercel-grammy": "^0.2.1"
   },
   "devDependencies": {
     "dotenv": "^16.3.1"
-  },
-  "overrides": {
-    "axios": "npm:@ponomarevlad/redaxios@^0.5.1-fix.3"
   },
   "engines": {
     "node": "^18.0.0"
