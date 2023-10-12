@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "grammy": "^1.19.1",
+    "grammy-debug-edge": "^0.0.0",
     "vercel-grammy": "^0.2.1"
   },
   "devDependencies": {
